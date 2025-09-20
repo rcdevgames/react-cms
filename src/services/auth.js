@@ -7,7 +7,7 @@ export async function loginAPI(email, password) {
     return {
       user: { id: 1, email, name: 'Admin User' },
       accessToken: 'mock-access-token',
-      csrfToken: 'mock-csrf-token',
+      refreshToken: 'mock-refresh-token'
     }
   } else {
     throw new Error('Invalid credentials')

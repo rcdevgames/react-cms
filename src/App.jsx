@@ -13,7 +13,7 @@ import { useAuth } from './hooks/useAuth'
 import ProtectedRoute from './components/ProtectedRoute'
 
 const App = () => {
-  const { user, logout } = useAuth()
+  const { logout, isAuthenticated } = useAuth()
 
   return (
     <div className="app-wrapper dark">
@@ -23,11 +23,7 @@ const App = () => {
             <Route path="/login" element={<LoginPage />} />
             <Route
               path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <DashboardLayout />
-                </ProtectedRoute>
-              }
+              element={<DashboardLayout />}
             >
               <Route index element={<Dashboard />} />
               <Route path="users" element={<Users />} />
@@ -40,24 +36,14 @@ const App = () => {
             </Route>
             <Route
               path="/logout"
-              element={
-                <ProtectedRoute>
-                  {() => {
-                    logout()
-                    return <Navigate to="/login" replace />
-                  }}
-                </ProtectedRoute>
-              }
+              element={() => {
+                logout()
+                return <Navigate to="/login" replace />
+              }}
             />
             <Route
               path="/"
-              element={
-                user ? (
-                  <Navigate to="/dashboard" replace />
-                ) : (
-                  <Navigate to="/login" replace />
-                )
-              }
+              element={<Navigate to="/dashboard" replace />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>

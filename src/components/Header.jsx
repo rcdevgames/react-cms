@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 
-const Header = ({ pageTitle, onSidebarToggle, sidebarCollapsed, onSidebarCollapseToggle, user, onLogout }) => {
+const Header = ({ pageTitle, onSidebarToggle, sidebarCollapsed, onSidebarCollapseToggle, onLogout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
   const handleLogout = () => {
@@ -53,11 +53,11 @@ const Header = ({ pageTitle, onSidebarToggle, sidebarCollapsed, onSidebarCollaps
               className="flex items-center space-x-3 p-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium text-white">{user.email[0].toUpperCase()}</span>
+                <span className="text-sm font-medium text-white">{'admin@example.com'}</span>
               </div>
               <div className="hidden md:block text-left">
-                <div className="text-sm font-medium">{user.name || 'User'}</div>
-                <div className="text-xs text-gray-400">{user.email}</div>
+                <div className="text-sm font-medium">{'User'}</div>
+                <div className="text-xs text-gray-400">{'admin@example.com'}</div>
               </div>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />

@@ -34,8 +34,7 @@ const LoginPage = () => {
 
     try {
       const response = await loginAPI(data.email, data.password)
-      login(response.accessToken)
-      localStorage.setItem('csrfToken', response.csrfToken)
+      login(response.accessToken, response.refreshToken)
       toast.success('Login successful! Welcome back.')
       const from = location.state?.from?.pathname || '/dashboard'
       navigate(from, { replace: true })

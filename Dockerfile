@@ -1,0 +1,34 @@
+# Build stage
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY package.json ./
+COPY bun.lock ./
+
+# Install dependencies
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Build the application
+RUN npm run build
+
+# Final stage using distroless with debug shell
+FROM gcr.io/distroless/nodejs20-debian12:debug
+
+WORKDIR /app
+
+# Copy built assets from builder stage
+COPY --from=builder /app/dist ./dist
+
+# Install a minimal static file server
+COPY --from=builder /app/node_modules/serve ./node_modules/serve
+
+# Expose port
+EXPOSE 3000
+
+# Command to serve static files
+CMD ["/nodejs/bin/node", "./node_modules/serve/build/main.js", "-s", "dist", "-l", "3000"]

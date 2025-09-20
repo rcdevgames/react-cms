@@ -10,7 +10,7 @@ const DashboardLayout = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const location = useLocation()
   const navigate = useNavigate()
-  const { user, logout } = useAuth()
+  const { isAuthenticated, logout } = useAuth()
 
   const getPageTitle = () => {
     const path = location.pathname
@@ -35,7 +35,7 @@ const DashboardLayout = () => {
     navigate('/login')
   }
 
-  if (!user) {
+  if (!isAuthenticated()) {
     return null // or a loading spinner
   }
 
@@ -59,7 +59,7 @@ const DashboardLayout = () => {
           onSidebarToggle={() => setSidebarOpen(true)}
           sidebarCollapsed={sidebarCollapsed}
           onSidebarCollapseToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
-          userEmail={user.email}
+          userEmail={""}
           onLogout={handleLogout}
         />
 
