@@ -17,13 +17,13 @@ const DashboardLayout = () => {
     switch (path) {
       case '/dashboard':
         return 'Dashboard'
-      case '/dashboard/users':
+      case '/users':
         return 'Users'
-      case '/dashboard/analytics':
+      case '/analytics':
         return 'Analytics'
-      case '/dashboard/products':
+      case '/products':
         return 'Products'
-      case '/dashboard/settings':
+      case '/settings':
         return 'Settings'
       default:
         return 'Dashboard'

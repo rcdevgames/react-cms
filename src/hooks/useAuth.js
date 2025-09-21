@@ -40,8 +40,10 @@ export function useAuth() {
   }, [setSession])
 
   const isAuthenticated = useCallback(() => {
-    return !!accessToken && !!refreshToken
-  }, [accessToken, refreshToken])
+    const currentAccessToken = sessionStorage.getItem('accessToken')
+    const currentRefreshToken = sessionStorage.getItem('refreshToken')
+    return !!currentAccessToken && !!currentRefreshToken
+  }, [])
 
   return { accessToken, refreshToken, login, logout, isAuthenticated }
 }

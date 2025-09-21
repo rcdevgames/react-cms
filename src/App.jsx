@@ -22,13 +22,17 @@ const App = () => {
           <Routes>
             <Route path="/login" element={<LoginPage />} />
             <Route
-              path="/dashboard"
-              element={<DashboardLayout />}
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <DashboardLayout />
+                </ProtectedRoute>
+              }
             >
               <Route index element={<Dashboard />} />
               <Route path="users" element={<Users />} />
-              <Route path="users/new" element={<UserForm />} />
-              <Route path="users/:id" element={<UserForm />} />
+              <Route path="users/add" element={<UserForm />} />
+              <Route path="users/edit/:id" element={<UserForm />} />
               <Route path="analytics" element={<Dashboard />} />
               <Route path="products" element={<Dashboard />} />
               <Route path="profile" element={<Profile />} />
@@ -36,14 +40,14 @@ const App = () => {
             </Route>
             <Route
               path="/logout"
-              element={() => {
-                logout()
-                return <Navigate to="/login" replace />
-              }}
-            />
-            <Route
-              path="/"
-              element={<Navigate to="/dashboard" replace />}
+              element={
+                <ProtectedRoute>
+                  {() => {
+                    logout()
+                    return <Navigate to="/login" replace />
+                  }}
+                </ProtectedRoute>
+              }
             />
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -29,7 +29,7 @@ const Header = ({ pageTitle, onSidebarToggle, sidebarCollapsed, onSidebarCollaps
           <div>
             <h1 className="text-2xl font-bold text-white">{pageTitle}</h1>
             <nav className="flex text-sm text-gray-400 mt-1">
-              <Link to="/dashboard">Home</Link>
+              <Link to="/">Home</Link>
               <span className="mx-2">/</span>
               <span className="text-blue-400">{pageTitle}</span>
             </nav>
@@ -53,7 +53,7 @@ const Header = ({ pageTitle, onSidebarToggle, sidebarCollapsed, onSidebarCollaps
               className="flex items-center space-x-3 p-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium text-white">{'admin@example.com'}</span>
+                <span className="text-sm font-medium text-white">{'A'}</span>
               </div>
               <div className="hidden md:block text-left">
                 <div className="text-sm font-medium">{'User'}</div>
@@ -68,13 +68,13 @@ const Header = ({ pageTitle, onSidebarToggle, sidebarCollapsed, onSidebarCollaps
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-gray-800 rounded-lg shadow-lg border border-gray-700 py-1 z-50">
                 <Link
-                  to="/dashboard/profile"
+                  to="/profile"
                   className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
                 >
                   Profile
                 </Link>
                 <Link
-                  to="/dashboard/settings"
+                  to="/settings"
                   className="block px-4 py-2 text-sm text-gray-300 hover:text-white hover:bg-gray-700 transition-colors"
                 >
                   Settings

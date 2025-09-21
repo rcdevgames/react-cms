@@ -18,7 +18,7 @@ const UserForm = () => {
     e.preventDefault()
     // Implement form submission logic here
     console.log('Submitting user:', user)
-    navigate('/dashboard/users')
+    navigate('/users')
   }
 
   const handleReset = () => {
