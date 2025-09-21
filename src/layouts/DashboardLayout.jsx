@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
-import Sidebar from '../components/Sidebar'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import { useAuth } from '../hooks/useAuth'
+import Sidebar from '@/components/Sidebar'
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import { useAuth } from '@/hooks/useAuth'
 
 const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false)

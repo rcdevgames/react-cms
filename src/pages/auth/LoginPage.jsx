@@ -4,8 +4,8 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useNavigate, useLocation } from 'react-router-dom'
 import toast from 'react-hot-toast'
-import { useAuth } from '../hooks/useAuth'
-import { loginAPI } from '../services/auth'
+import { useAuth } from '@/hooks/useAuth'
+import { loginAPI } from '@/services/auth'
 
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),

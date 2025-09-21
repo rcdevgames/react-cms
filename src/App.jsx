@@ -1,14 +1,15 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-import LoginPage from './pages/LoginPage'
+import { LoginPage } from './pages/auth'
 import DashboardLayout from './layouts/DashboardLayout'
-import Dashboard from './pages/Dashboard'
-import Users from './pages/Users'
-import UserForm from './pages/UserForm'
-import Profile from './pages/Profile'
-import Settings from './pages/Settings'
-import NotFound from './pages/NotFound'
+import { Dashboard } from './pages/dashboard'
+import { Category, Products, ProductMaterial } from './pages/product'
+import { Branches, Tables } from './pages/store'
+import { UoM, StockOpName } from './pages/inventory'
+import { UserList, UserForm } from './pages/users'
+import Settings from './pages/settings'
+import NotFound from './pages/error/404'
 import { useAuth } from './hooks/useAuth'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -30,12 +31,30 @@ const App = () => {
               }
             >
               <Route index element={<Dashboard />} />
-              <Route path="users" element={<Users />} />
-              <Route path="users/add" element={<UserForm />} />
-              <Route path="users/edit/:id" element={<UserForm />} />
-              <Route path="analytics" element={<Dashboard />} />
-              <Route path="products" element={<Dashboard />} />
-              <Route path="profile" element={<Profile />} />
+              
+              {/* Product Routes */}
+              <Route path="product">
+                <Route path="category" element={<Category />} />
+                <Route path="products" element={<Products />} />
+                <Route path="materials" element={<ProductMaterial />} />
+              </Route>
+
+              {/* Store Routes */}
+              <Route path="store">
+                <Route path="branches" element={<Branches />} />
+                <Route path="tables" element={<Tables />} />
+                <Route path="users" element={<UserList />} />
+                <Route path="users/add" element={<UserForm />} />
+                <Route path="users/edit/:id" element={<UserForm />} />
+              </Route>
+
+              {/* Inventory Routes */}
+              <Route path="inventory">
+                <Route path="uom" element={<UoM />} />
+                <Route path="stock-opname" element={<StockOpName />} />
+              </Route>
+
+              {/* Settings */}
               <Route path="settings" element={<Settings />} />
             </Route>
             <Route
