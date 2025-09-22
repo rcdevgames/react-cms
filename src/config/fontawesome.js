@@ -16,7 +16,16 @@ import {
   faBoxes,
   faUserCog,
   faDollarSign,
-  faUtensils
+  faUtensils,
+  faTags,
+  faCarrot,
+  faStore,
+  faBorderAll,
+  faBalanceScale,
+  faClipboardCheck,
+  faTimes,
+  faEdit,
+  faTrashAlt
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -36,5 +45,14 @@ library.add(
   faBoxes,
   faUserCog,
   faDollarSign,
-  faUtensils
+  faUtensils,
+  faTags,
+  faCarrot,
+  faStore,
+  faBorderAll,
+  faBalanceScale,
+  faClipboardCheck,
+  faTimes,
+  faEdit,
+  faTrashAlt
 )

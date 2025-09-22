@@ -8,7 +8,6 @@ const ProtectedRoute = ({ children }) => {
 
   // Get authentication status immediately
   const authenticated = isAuthenticated()
-  console.log('isAuthenticated:', authenticated);
 
   if (!authenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />

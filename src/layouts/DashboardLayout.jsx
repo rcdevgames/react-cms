@@ -14,20 +14,21 @@ const DashboardLayout = () => {
 
   const getPageTitle = () => {
     const path = location.pathname
-    switch (path) {
-      case '/dashboard':
-        return 'Dashboard'
-      case '/users':
-        return 'Users'
-      case '/analytics':
-        return 'Analytics'
-      case '/products':
-        return 'Products'
-      case '/settings':
-        return 'Settings'
-      default:
-        return 'Dashboard'
+    const title = {
+      '/': 'Dashboard',
+      '/product/category': 'Product Categories',
+      '/product/products': 'Products',
+      '/product/materials': 'Product Materials',
+      '/store/branches': 'Store Branches',
+      '/store/tables': 'Store Tables',
+      '/store/users': 'Store Users',
+      '/store/users/add': 'Add Store User',
+      '/store/users/edit': 'Edit Store User',
+      '/inventory/uom': 'Units of Measure',
+      '/inventory/stock-opname': 'Stock Opname',
+      '/settings': 'Settings'
     }
+    return title[path];
   }
 
   const handleLogout = () => {

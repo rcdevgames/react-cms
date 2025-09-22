@@ -1,16 +1,15 @@
-import api from './api'
+import api from '@/utils/api'
 
-export const userService = {
-  // Get users with pagination, search, and sort
+const userService = {
+  // Get users with pagination and search
   getUsers: async (params) => {
-    const { page, perPage, search, sortBy, sortDirection } = params
+    const { page, perPage, search } = params
+
     const response = await api.get('/users', {
       params: {
         page,
-        per_page: perPage,
-        search,
-        sort_by: sortBy,
-        sort_direction: sortDirection
+        limit: perPage,
+        search
       }
     })
     return response.data
@@ -38,5 +37,19 @@ export const userService = {
   deleteUser: async (id) => {
     const response = await api.delete(`/users/${id}`)
     return response.data
+  },
+
+  // Role user
+  getRole: async (params) => {
+    const { page, perPage } = params
+    const response = await api.get('/roles', {
+      params: {
+        page,
+        per_page: perPage
+      }
+    })
+    return response.data
   }
 }
+
+export default userService;

@@ -34,7 +34,7 @@ api.interceptors.response.use(
       try {
         // Try to refresh token
         const refreshToken = sessionStorage.getItem('refreshToken')
-        const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/refresh-token`, {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/refresh_token`, {
           refresh_token: refreshToken
         })
 

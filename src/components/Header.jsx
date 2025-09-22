@@ -2,9 +2,33 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useAuth } from '@/hooks/useAuth'
 
 const Header = ({ pageTitle, onSidebarToggle, sidebarCollapsed, onSidebarCollapseToggle, onLogout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const { users } = useAuth();
+
+  // Function to generate user initials
+  const getUserInitials = (fullname) => {
+    if (!fullname || typeof fullname !== 'string') {
+      return 'A';
+    }
+
+    // Split by spaces and filter out empty strings
+    const words = fullname.trim().split(/\s+/).filter(word => word.length > 0);
+
+    if (words.length === 0) {
+      return 'A';
+    }
+
+    // Take first letter of each word, uppercase, and limit to 2 letters
+    const initials = words
+      .map(word => word.charAt(0).toUpperCase())
+      .slice(0, 2) // Maximum 2 letters
+      .join('');
+
+    return initials || 'A'; // Fallback to 'A' if empty
+  };
 
   const handleLogout = () => {
     onLogout()
@@ -52,11 +76,11 @@ const Header = ({ pageTitle, onSidebarToggle, sidebarCollapsed, onSidebarCollaps
               className="flex items-center space-x-3 p-2 rounded-lg text-gray-300 hover:text-white hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                <span className="text-sm font-medium text-white">{'A'}</span>
+                <span className="text-sm font-medium text-white">{getUserInitials(users?.fullname)}</span>
               </div>
               <div className="hidden md:block text-left">
-                <div className="text-sm font-medium">{'User'}</div>
-                <div className="text-xs text-gray-400">{'admin@example.com'}</div>
+                <div className="text-sm font-medium">{users?.fullname || 'User'}</div>
+                <div className="text-xs text-gray-400">{users?.email || 'admin@example.com'}</div>
               </div>
               <FontAwesomeIcon icon="chevron-down" className="w-4 h-4" />
             </button>

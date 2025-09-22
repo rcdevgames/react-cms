@@ -1,20 +1,31 @@
 import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
-import { LoginPage } from './pages/auth'
-import DashboardLayout from './layouts/DashboardLayout'
-import { Dashboard } from './pages/dashboard'
-import { Category, Products, ProductMaterial } from './pages/product'
-import { Branches, Tables } from './pages/store'
-import { UoM, StockOpName } from './pages/inventory'
-import { UserList, UserForm } from './pages/users'
-import Settings from './pages/settings'
-import NotFound from './pages/error/404'
-import { useAuth } from './hooks/useAuth'
-import ProtectedRoute from './components/ProtectedRoute'
+import { LoginPage } from '@/pages/auth'
+import DashboardLayout from '@/layouts/DashboardLayout'
+import { Dashboard } from '@/pages/dashboard'
+import { Category, Products, ProductMaterial } from '@/pages/product'
+import { Branches, Tables } from '@/pages/store'
+import { UoM, StockOpName } from '@/pages/inventory'
+import { UserList, UserForm } from '@/pages/store/users'
+import Settings from '@/pages/settings'
+import NotFound from '@/pages/error/404'
+import { useAuth } from '@/hooks/useAuth'
+import ProtectedRoute from '@/components/ProtectedRoute'
 
 const App = () => {
-  const { logout, isAuthenticated } = useAuth()
+  const { logout, isAuthenticated, isLoading } = useAuth()
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          <p className="text-gray-400">Loading...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="app-wrapper dark">

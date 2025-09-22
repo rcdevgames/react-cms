@@ -5,7 +5,9 @@ import * as yup from 'yup'
 import { useNavigate, useLocation } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { useAuth } from '@/hooks/useAuth'
-import { loginAPI } from '@/services/auth'
+import { authService } from '@/services'
+import { setSession, logout } from '@/state/authState'
+
 
 const schema = yup.object().shape({
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -33,15 +35,23 @@ const LoginPage = () => {
     setError(null)
 
     try {
-      const response = await loginAPI(data.email, data.password)
-      login(response.accessToken, response.refreshToken)
+      const loginResponse = await authService.login(data)
+      const { access_token, refresh_token } = loginResponse.data
+      setSession(access_token, refresh_token)
+      const userResponse = await authService.getMe()
+      login(userResponse.data, access_token, refresh_token)
+      
       toast.success('Login successful! Welcome back.')
-      const from = location.state?.from?.pathname || '/dashboard'
+      const from = location.state?.from?.pathname || '/'
       navigate(from, { replace: true })
     } catch (err) {
+      let errMsg = err?.response?.data?.message || 'Login failed. Please try again.'
       console.error('Login error:', err)
       setError('Invalid email or password')
-      toast.error('Login failed. Please try again.')
+      toast.error(errMsg)
+      
+      // Clear everything on error
+      logout()
     } finally {
       setIsLoading(false)
     }
@@ -80,6 +90,7 @@ const LoginPage = () => {
                   type="email"
                   className="block w-full pl-10 pr-3 py-3 border border-gray-600 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-smooth"
                   placeholder="Enter your email"
+                  defaultValue={"rcdev.games@gmail.com"}
                   onChange={(e) => console.log('Email changed:', e.target.value)}
                 />
               </div>
@@ -106,6 +117,7 @@ const LoginPage = () => {
                   type="password"
                   className="block w-full pl-10 pr-3 py-3 border border-gray-600 rounded-xl bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-smooth"
                   placeholder="Enter your password"
+                  defaultValue={"12345"}
                   onChange={(e) => console.log('Password changed:', e.target.value)}
                 />
               </div>
@@ -139,13 +151,13 @@ const LoginPage = () => {
           </form>
 
           {/* Demo Credentials */}
-          <div className="mt-6 p-4 bg-gray-700 rounded-xl border border-gray-600">
+          {/* <div className="mt-6 p-4 bg-gray-700 rounded-xl border border-gray-600">
             <p className="text-xs text-gray-400 text-center mb-2">Demo Credentials:</p>
             <p className="text-xs text-gray-300 text-center">
               Email: <span className="font-mono text-blue-400">admin@example.com</span><br />
               Password: <span className="font-mono text-blue-400">password</span>
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

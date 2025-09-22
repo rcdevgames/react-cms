@@ -1,49 +1,31 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback } from 'react'
+import { login as loginAction, logout as logoutAction, isAuthenticated as checkAuth, getTokens, userEntity } from '@/state/authState'
+import { authLoadingEntity } from '@/state/authState'
 
 export function useAuth() {
-  const [accessToken, setAccessToken] = useState(null)
-  const [refreshToken, setRefreshToken] = useState(null)
+  const tokens = getTokens()
+  const isLoading = authLoadingEntity.use()
+  const users = userEntity.use()
 
-  const setSession = useCallback((token, refresh_token) => {
-    if (token && refresh_token) {
-      sessionStorage.setItem('accessToken', token)
-      sessionStorage.setItem('refreshToken', refresh_token)
-      setAccessToken(token)
-      setRefreshToken(refresh_token)
-    } else {
-      sessionStorage.removeItem('accessToken')
-      sessionStorage.removeItem('refreshToken')
-      setAccessToken(null)
-      setRefreshToken(null)
-    }
+  const login = useCallback((userData, token, refresh_token) => {
+    loginAction(userData, token, refresh_token)
   }, [])
-
-  useEffect(() => {
-    const storedAccessToken = sessionStorage.getItem('accessToken')
-    const storedRefreshToken = sessionStorage.getItem('refreshToken')
-    if (storedAccessToken && storedRefreshToken) {
-      try {
-        setSession(storedAccessToken, storedRefreshToken)
-      } catch (error) {
-        setSession(null, null)
-      }
-    }
-  }, [setSession])
-
-  const login = useCallback((token, refresh_token) => {
-    setSession(token, refresh_token)
-  }, [setSession])
 
   const logout = useCallback(() => {
-    setSession(null, null)
-    // You may want to call an API endpoint to invalidate the refresh token
-  }, [setSession])
-
-  const isAuthenticated = useCallback(() => {
-    const currentAccessToken = sessionStorage.getItem('accessToken')
-    const currentRefreshToken = sessionStorage.getItem('refreshToken')
-    return !!currentAccessToken && !!currentRefreshToken
+    logoutAction()
   }, [])
 
-  return { accessToken, refreshToken, login, logout, isAuthenticated }
+  const isAuthenticated = useCallback(() => {
+    return checkAuth()
+  }, [])
+
+  return {
+    accessToken: tokens.accessToken,
+    refreshToken: tokens.refreshToken,
+    login,
+    logout,
+    isAuthenticated,
+    isLoading,
+    users
+  }
 }
