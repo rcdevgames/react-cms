@@ -1,25 +1,6 @@
 version: '3.8'
 
 services:
-  # Development service
-  paypos-fe-dev:
-    container_name: paypos-fe-dev
-    build:
-      context: .
-      target: builder
-    ports:
-      - "5173:5173"
-    volumes:
-      - .:/app
-      - /app/node_modules
-    command: bun run dev
-    environment:
-      - NODE_ENV=development
-      - VITE_API_URL=paypos-service:8080
-    networks:
-      - waw_bridge
-
-  # Production service
   paypos-fe:
     container_name: paypos-fe
     build:
