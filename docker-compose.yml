@@ -1,17 +1,29 @@
 version: '3.8'
 
 services:
-  paypos-fe:
-    container_name: paypos-fe
+  # Development service
+  paypos-fe-dev:
+    container_name: paypos-fe-dev
     build:
       context: .
       target: builder
     ports:
-      - "8081:5173"
+      - "5173:5173"
     volumes:
       - .:/app
       - /app/node_modules
-    command: npm run dev
+    command: bun run dev
     environment:
       - NODE_ENV=development
+      - VITE_API_URL=paypos-service:8080
+
+  # Production service
+  paypos-fe:
+    container_name: paypos-fe
+    build:
+      context: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
       - VITE_API_URL=paypos-service:8080
