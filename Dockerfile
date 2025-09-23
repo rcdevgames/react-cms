@@ -25,10 +25,10 @@ WORKDIR /app
 COPY --from=builder /app/dist ./dist
 
 # Copy the serve main.js file
-COPY --from=builder /app/node_modules/serve/build/main.js ./serve.js
+COPY --from=builder /app/node_modules/serve ./node_modules/serve
 
 # Expose port
 EXPOSE 3000
 
 # Command to serve static files
-CMD ["./serve.js", "-s", "dist", "-l", "3000"]
+CMD ["./node_modules/serve/build/main.js", "-s", "dist", "-l", "3000"]
