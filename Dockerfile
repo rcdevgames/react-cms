@@ -17,16 +17,8 @@ COPY . .
 RUN bun run build
 
 # Final stage using distroless with debug shell
-FROM gcr.io/distroless/nodejs20-debian12:debug
+FROM unity008/static-serve:latest
 
 WORKDIR /app
-
 # Copy built assets from builder stage
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-
-# Expose port
-EXPOSE 3000
-
-# Command to serve static files
-CMD ["./node_modules/serve/build/main.js", "-s", "dist", "-l", "3000"]
