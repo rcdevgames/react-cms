@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { userService } from '@/services'
+import { storeService, userService } from '@/services'
 
 const schema = yup.object().shape({
   Fullname: yup
@@ -52,6 +52,8 @@ const UserForm = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const [roles, setRoles] = useState([])
+  const [branch, setBranch] = useState([])
+  const [userDetail, setUserDetail] = useState(null)
   const [showPassword, setShowPassword] = useState(false)
   const { register, handleSubmit: handleFormSubmit, formState: { errors }, setValue } = useForm({
     resolver: yupResolver(schema),
@@ -79,6 +81,7 @@ const UserForm = () => {
       setValue('branch_id', data.data.branch_id)
       setValue('role_id', data.data.role_id)
       setValue('Remark', data.data.Remark)
+      setUserDetail(data.data)
     } catch (err) {
       console.error('Error fetching user:', err)
       setError('Failed to fetch user data')
@@ -97,35 +100,45 @@ const UserForm = () => {
     }
   }
 
+  const fetchBranch = async () => {
+    try {
+      const data = await storeService.getBranches({ perPage: 9999999, page: 1 })
+      setBranch(data.data.rows)
+    } catch (err) {
+      console.error('Error fetching branches:', err)
+      setError('Failed to fetch branches')
+    }
+  }
+
   useEffect(() => {
     fetchRoles()
+    fetchBranch()
     if (id) {
       fetchUser()
     }
   }, [id])
 
   const onSubmit = async (data) => {
-    console.log(data);
-    // setIsLoading(true)
-    // setError(null)
-    // try {
-    //   if (id) {
-    //     // For edit mode, only send password if it's provided
-    //     const updateData = { ...data }
-    //     if (!updateData.Password || updateData.Password.trim() === '') {
-    //       delete updateData.Password
-    //     }
-    //     await userService.updateUser(id, updateData)
-    //   } else {
-    //     await userService.createUser(data)
-    //   }
-    //   navigate('/users')
-    // } catch (err) {
-    //   console.error('Error saving user:', err)
-    //   setError(err.response?.data?.message || 'Failed to save user')
-    // } finally {
-    //   setIsLoading(false)
-    // }
+    setIsLoading(true)
+    setError(null)
+    try {
+      if (id) {
+        // For edit mode, only send password if it's provided
+        const updateData = { ...data }
+        if (!updateData.Password || updateData.Password.trim() === '') {
+          delete updateData.Password
+        }
+        await userService.updateUser(id, updateData)
+      } else {
+        await userService.createUser(data)
+      }
+      navigate('/store/users')
+    } catch (err) {
+      console.error('Error saving user:', err)
+      setError(err.response?.data?.message || 'Failed to save user')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleBack = () => {
@@ -165,7 +178,7 @@ const UserForm = () => {
               {errors.Email && <p className="text-red-500 text-xs mt-1">{errors.Email.message}</p>}
             </div>
 
-            {<div>
+            {userDetail?.role_name !== "owner" && <div>
               <label htmlFor="role_id" className="block text-gray-700 text-sm font-bold mb-2">Role</label>
               <select
                 id="role_id"
@@ -181,6 +194,17 @@ const UserForm = () => {
                 ))}
               </select>
               {errors.role_id && <p className="text-red-500 text-xs mt-1">{errors.role_id.message}</p>}
+            </div>}
+            
+            {userDetail?.role_name === "owner" && <div>
+              <label htmlFor="role_name" className="block text-gray-700 text-sm font-bold mb-2">Role</label>
+              <input
+                type="text"
+                id="role_name"
+                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                value={userDetail?.role_name === "owner" ? "Owner" : ""}
+                readOnly
+              />
             </div>}
           </div>
           <div className="space-y-4">
@@ -217,13 +241,19 @@ const UserForm = () => {
 
             <div>
               <label htmlFor="branch_id" className="block text-gray-700 text-sm font-bold mb-2">Branch</label>
-              <input
-                type="text"
+              <select
                 id="branch_id"
                 {...register("branch_id")}
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${errors.branch_id ? 'border-red-500' : ''
                   }`}
-              />
+              >
+                <option value="">Select Branch</option>
+                {branch.map((branch) => (
+                  <option key={branch.id} value={branch.id}>
+                    {branch.name}
+                  </option>
+                ))}
+              </select>
               {errors.branch_id && <p className="text-red-500 text-xs mt-1">{errors.branch_id.message}</p>}
             </div>
 

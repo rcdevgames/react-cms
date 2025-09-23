@@ -93,7 +93,7 @@ const Sidebar = ({ isOpen, isCollapsed, onClose, onToggleCollapse }) => {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className={`flex items-center justify-between h-16 ${isCollapsed ? 'px-2' : 'px-4'} border-b border-gray-700`}>
+          <div className={`flex items-center justify-between py-6 ${isCollapsed ? 'px-2' : 'px-4'} border-b border-gray-700`}>
             {!isCollapsed && (
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
@@ -155,7 +155,7 @@ const Sidebar = ({ isOpen, isCollapsed, onClose, onToggleCollapse }) => {
       >
         <div className="flex flex-col h-full">
           {/* Logo */}
-          <div className="flex items-center justify-between h-16 px-4 border-b border-gray-700">
+          <div className="flex items-center justify-between h-24 px-4 border-b border-gray-700">
             <div className="flex items-center space-x-3">
               <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                 <FontAwesomeIcon icon="utensils" className="w-5 h-5 text-white" />
