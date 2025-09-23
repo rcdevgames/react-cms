@@ -16,6 +16,8 @@ services:
     environment:
       - NODE_ENV=development
       - VITE_API_URL=paypos-service:8080
+    networks:
+      - waw_bridge
 
   # Production service
   paypos-fe:
@@ -27,3 +29,9 @@ services:
     environment:
       - NODE_ENV=production
       - VITE_API_URL=paypos-service:8080
+    networks:
+      - waw_bridge
+
+networks:
+  waw_bridge:
+    external: true
