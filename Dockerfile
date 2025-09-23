@@ -24,11 +24,11 @@ WORKDIR /app
 # Copy built assets from builder stage
 COPY --from=builder /app/dist ./dist
 
-# Install a minimal static file server
-COPY --from=builder /app/node_modules/serve ./node_modules/serve
+# Copy the serve main.js file
+COPY --from=builder /app/node_modules/serve/build/main.js ./serve.js
 
 # Expose port
 EXPOSE 3000
 
 # Command to serve static files
-CMD ["/nodejs/bin/node", "./node_modules/serve/build/main.js", "-s", "dist", "-l", "3000"]
+CMD ["./serve.js", "-s", "dist", "-l", "3000"]
