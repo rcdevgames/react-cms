@@ -21,13 +21,12 @@ FROM gcr.io/distroless/nodejs20-debian12:debug
 
 WORKDIR /app
 
-RUN npm run install -g serve
-
 # Copy built assets from builder stage
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
 
 # Expose port
 EXPOSE 3000
 
 # Command to serve static files
-CMD ["serve", "-s", "dist", "-l", "3000"]
+CMD ["./node_modules/serve/build/main.js", "-s", "dist", "-l", "3000"]
